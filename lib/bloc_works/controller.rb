@@ -30,13 +30,17 @@ module BlocWorks
       request.params.merge(@routing_params)
     end
 
-    def repsonse(text, status = 200, headers ={})
+    def response(text, status = 200, headers ={})
       raise "Cannot respond mulitiple times" unless @response.nil?
       @response = Rack::Response.new([text].flatten,status, headers)
     end
 
     def render(*args)
       response(create_response_array(*args))
+    end
+
+    def redirect(*args)
+      response(create_response_array(*args), 302)
     end
 
     def get_response
